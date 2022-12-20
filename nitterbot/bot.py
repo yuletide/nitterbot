@@ -40,7 +40,7 @@ def init():
     return api
 
 
-def build_reply(mention):
+def build_reply(content):
     # fetch reply
     # fetch status that reply was posted beneath
     # check status for twitter url
@@ -48,9 +48,6 @@ def build_reply(mention):
     # post reply
     # TODO: Allow for sepcifying a nitter instance
     reply_text = ""
-    # if mention.text.find("twitter"):
-    #     print("we found the disease, time to heal")
-    #     reply_text = mention.text.replace("twitter.com", "unofficialbird.org")
 
     return reply_text
     print("creating reply")
@@ -66,16 +63,26 @@ notifications = mastodon.notifications(types=["mention"])
 # Returns a list of notification dicts.
 for mention in notifications:
     # if notifications maintain read state we dont have to track previous replies at all
-    # otherwise we need a datastore
+    # otherwise we need persistence of a timestamp at least, or at most an append-only
+    # list of id's
     pp.pprint(mention)
-    user = mention["account"]["username"]
+    user = mention["account"]
     status = mention.status
     print(
-        "found mention in reply to {user} id {id}".format(
-            user=mention["account"]["username"], id=mention["account"]["id"]
+        "===== found mention in reply to {user} id {id} =====".format(
+            user=user.username, id=user.id
         )
     )
     print(status.content)
-    # reply = build_reply(mention)
+    print(status.content.find("twitter"))
+    if status.content.find("twitter") > 0:
+        print("*birdsite detected, replacing*")
+        reply_text = status.content.replace("twitter", "unofficialbird")
+        print(reply_text)
+        print("new status: {}".format(reply_text))
+        mastodon.status_post(in_reply_to_id=status.id, status=reply_text)
+    else:
+        print("no birdsite found, skipping")
+
     # mastodon.status_post(in_reply_to_id=mention.id, status=reply)
     # print("reply posted to post {id}" % id)
