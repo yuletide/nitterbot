@@ -1,6 +1,12 @@
 from nitterbot import notifylistener
 from nitterbot import bot
 
-listener = notifylistener.NotifyListener()
-mastodon = bot.init()
-mastodon.stream_user(listener)
+
+def main():
+    listener = notifylistener.NotifyListener()
+    mastodon = bot.init()
+    mastodon.stream_user(listener)
+
+
+if __name__ == "__main__":
+    main()
