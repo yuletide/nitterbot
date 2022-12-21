@@ -2,6 +2,7 @@ from mastodon import Mastodon
 
 from dotenv import dotenv_values
 from os.path import exists
+from os import getenv
 
 # from . import parser
 from nitterbot.parser import HTMLFilter
@@ -10,6 +11,12 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=4)
 config = dotenv_values(".env")
+print("CONFIG VARS {}".format(config))
+if config["USER"]:
+    print("config found yay")
+else:
+    config["USER"] = getenv("USER")
+    config["PASSWORD"] = getenv("PASSWORD")
 USER_CREDS = "usercred.secret"
 CLIENT_CREDS = "clientcred.secret"
 
