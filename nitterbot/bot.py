@@ -11,6 +11,7 @@ import pprint
 pp = pprint.PrettyPrinter(indent=4)
 config = dotenv_values(".env")
 USER_CREDS = "usercred.secret"
+CLIENT_CREDS = "clientcred.secret"
 
 
 def register():
@@ -19,11 +20,15 @@ def register():
     Mastodon.create_app(
         "nitterbot",
         api_base_url="https://botsin.space/",
-        to_file="clientcred.secret",
+        to_file=CLIENT_CREDS,
     )
 
 
 def init():
+    if exists(CLIENT_CREDS):
+        print("client secret found")
+    else:
+        register()
 
     if exists(USER_CREDS):
         print("user token already found")
