@@ -82,7 +82,7 @@ def process_mention(mention, api):
     reply = build_reply(status.content)
 
     # api.status_post(in_reply_to_id=status.id, status=reply)
-    api.status_reply(to_status=status, status=reply)
+    api.status_reply(to_status=status, status=reply, untag=True, visibility="public")
     print("reply posted")
     # print("reply posted to post {id}" % user.id)
 
