@@ -71,6 +71,22 @@ def build_reply(content):
     return reply_text
 
 
+def process_mention(mention, api):
+    user = mention.account
+    status = mention.status
+    print(
+        "===== found mention in reply to {user} id {id} =====".format(
+            user=user.username, id=user.id
+        )
+    )
+    reply = build_reply(status.content)
+
+    # api.status_post(in_reply_to_id=status.id, status=reply)
+    api.status_reply(to_status=status, status=reply)
+    print("reply posted")
+    # print("reply posted to post {id}" % user.id)
+
+
 def get_notifications(api):
     print("fetching mentions")
     notifications = api.notifications(types=["mention"])
@@ -78,17 +94,7 @@ def get_notifications(api):
     for mention in notifications:
         # if notifications maintain read state we dont have to track previous replies
         # pp.pprint(mention)
-        user = mention["account"]
-        status = mention.status
-        print(
-            "===== found mention in reply to {user} id {id} =====".format(
-                user=user.username, id=user.id
-            )
-        )
-        build_reply(status.content)
-
-        # mastodon.status_post(in_reply_to_id=mention.id, status=reply)
-        # print("reply posted to post {id}" % id)
+        process_mention(mention, api)
 
 
 if __name__ == "__main__":
