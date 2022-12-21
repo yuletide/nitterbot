@@ -11,10 +11,10 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=4)
 config = dotenv_values(".env")
-print("CONFIG VARS {}".format(config))
-if config["USER"]:
-    print("config found yay")
+if "USER" in config:
+    print("config loaded yay")
 else:
+    print("loading config from environment")
     config["USER"] = getenv("USER")
     config["PASSWORD"] = getenv("PASSWORD")
 USER_CREDS = "usercred.secret"
