@@ -2,6 +2,9 @@ from mastodon import Mastodon
 
 from dotenv import dotenv_values
 from os.path import exists
+
+# from . import parser
+from nitterbot.parser import HTMLFilter
 import pprint
 
 
@@ -48,12 +51,18 @@ def build_reply(content):
     # replace with nitter url
     # post reply
     # TODO: Allow for sepcifying a nitter instance
+
+    # I HATE PYTHON
+    parsed = HTMLFilter.convert_html_to_text(content)
+    print("filtered status {}".format(parsed))
+
     reply_text = ""
     if content.find("twitter") > 0:
         print("*birdsite detected, replacing*")
-        reply_text = content.replace("twitter", "unofficialbird")
+        reply_text = parsed.replace("twitter", "unofficialbird")
         print(reply_text)
         print("new status: {}".format(reply_text))
+        return reply_text
         # mastodon.status_post(in_reply_to_id=status.id, status=reply_text)
     else:
         print("no birdsite found, skipping")
@@ -76,16 +85,7 @@ def get_notifications(api):
                 user=user.username, id=user.id
             )
         )
-        print(status.content)
-        print(status.content.find("twitter"))
-        if status.content.find("twitter") > 0:
-            print("*birdsite detected, replacing*")
-            reply_text = status.content.replace("twitter", "unofficialbird")
-            print(reply_text)
-            print("new status: {}".format(reply_text))
-            # api.status_post(in_reply_to_id=status.id, status=reply_text)
-        else:
-            print("no birdsite found, skipping")
+        build_reply(status.content)
 
         # mastodon.status_post(in_reply_to_id=mention.id, status=reply)
         # print("reply posted to post {id}" % id)
