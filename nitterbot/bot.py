@@ -4,6 +4,8 @@ from dotenv import dotenv_values
 from os.path import exists
 import pprint
 
+from nitterbot import Nitterbot
+
 pp = pprint.PrettyPrinter(indent=4)
 config = dotenv_values(".env")
 USER_CREDS = "usercred.secret"
@@ -80,7 +82,7 @@ for mention in notifications:
         reply_text = status.content.replace("twitter", "unofficialbird")
         print(reply_text)
         print("new status: {}".format(reply_text))
-        mastodon.status_post(in_reply_to_id=status.id, status=reply_text)
+        # mastodon.status_post(in_reply_to_id=status.id, status=reply_text)
     else:
         print("no birdsite found, skipping")
 
