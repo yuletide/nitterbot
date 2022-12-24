@@ -1,11 +1,13 @@
-from mastodon import Mastodon
-
 from dotenv import dotenv_values
 from os.path import exists
 from os import getenv
 
-# from . import parser
+from mastodon import Mastodon
+
+# from nitterbot.notifylistener import NotifyListener
 from nitterbot.parser import HTMLFilter
+
+# For debugging api responses
 import pprint
 
 
@@ -110,6 +112,4 @@ def get_notifications(api):
 
 
 if __name__ == "__main__":
-    # procedural script approach
-    api = init()
-    get_notifications(api)
+    print("To run bot use python -m nitterbot")
