@@ -1,13 +1,18 @@
-from nitterbot.notifylistener import NotifyListener
-from nitterbot import bot
+# Should we just move this function here or leave it in bot.py?
+# bot.main()
+# from nitterbot import bot
 
-# This file was created to help deploy to railway
-# TODO: Move this logic back to the module
+# bot.main()
+
+from nitterbot.bot import init
+from nitterbot.notifylistener import NotifyListener
+
+print("Main")
 
 
 def main():
     listener = NotifyListener()
-    mastodon = bot.init()
+    mastodon = init()
     # Mastodon.py currently does not support websocket based, multiplexed streams,
     # but might in the future.
     # https://mastodonpy.readthedocs.io/en/stable/10_streaming.html
@@ -16,5 +21,4 @@ def main():
     mastodon.stream_user(listener)
 
 
-if __name__ == "__main__":
-    main()
+main()
