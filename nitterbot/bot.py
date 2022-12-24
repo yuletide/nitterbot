@@ -18,6 +18,7 @@ if "USER" in config:
 else:
     print("loading config from environment")
     config["USER"] = getenv("USER")
+    print(config["USER"])
     config["PASSWORD"] = getenv("PASSWORD")
 USER_CREDS = "usercred.secret"
 CLIENT_CREDS = "clientcred.secret"
