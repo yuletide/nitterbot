@@ -1,13 +1,5 @@
-# Should we just move this function here or leave it in bot.py?
-# bot.main()
-# from nitterbot import bot
-
-# bot.main()
-
 from nitterbot.bot import init
 from nitterbot.notifylistener import NotifyListener
-
-print("Main")
 
 
 def main():

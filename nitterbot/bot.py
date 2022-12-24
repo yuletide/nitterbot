@@ -58,7 +58,7 @@ def init():
     return api
 
 
-def build_reply(content):
+def build_reply(status):
     # fetch reply
     # fetch status that reply was posted beneath
     # check status for twitter url
@@ -66,12 +66,11 @@ def build_reply(content):
     # post reply
     # TODO: Allow for sepcifying a nitter instance
 
-    # I HATE PYTHON
-    parsed = HTMLFilter.convert_html_to_text(content)
+    parsed = HTMLFilter.convert_html_to_text(status.content)
     print("filtered status {}".format(parsed))
 
     reply_text = ""
-    if content.find("twitter") > 0:
+    if contains_twitter_link(parsed):
         print("*birdsite detected, replacing*")
         reply_text = parsed.replace("twitter", "unofficialbird")
         print(reply_text)
@@ -79,7 +78,7 @@ def build_reply(content):
         return reply_text
         # mastodon.status_post(in_reply_to_id=status.id, status=reply_text)
     else:
-        print("no birdsite found, skipping")
+        print("no birdsite found, checking parent")
         return
 
     return reply_text
@@ -93,12 +92,16 @@ def process_mention(mention, api):
             user=user.username, id=user.id
         )
     )
-    reply = build_reply(status.content)
+    reply = build_reply(status)
 
     # api.status_post(in_reply_to_id=status.id, status=reply)
     api.status_reply(to_status=status, status=reply, untag=True, visibility="public")
     print("reply posted")
     # print("reply posted to post {id}" % user.id)
+
+
+def contains_twitter_link(text):
+    return text.find("//twitter.com/")
 
 
 def get_notifications(api):
