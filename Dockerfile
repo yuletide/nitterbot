@@ -36,4 +36,4 @@ RUN poetry config virtualenvs.create false && \
 # ADD main.py .
 COPY . /app
 
-CMD ["python", "main.py"]
+CMD ["python", "-m", "nitterbot"]

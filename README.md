@@ -3,7 +3,7 @@ Basic bot that converts twitter links of any kind to nitter.net or similar
 
 Requirements:
 * Poetry
-* .env file with login info 
+* .env file or environment variables with login info: USER and PASSWORD
 
 
 ## TODO

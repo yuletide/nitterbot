@@ -80,9 +80,8 @@ def build_reply(status):
         # mastodon.status_post(in_reply_to_id=status.id, status=reply_text)
     else:
         print("no birdsite found, checking parent")
+        pp.pprint(status)
         return
-
-    return reply_text
 
 
 def process_mention(mention, api):
@@ -101,8 +100,9 @@ def process_mention(mention, api):
     # print("reply posted to post {id}" % user.id)
 
 
+# TODO make this regex, but it works...
 def contains_twitter_link(text):
-    return text.find("//twitter.com/")
+    return text.find("//twitter.com/") > 0
 
 
 def get_notifications(api):

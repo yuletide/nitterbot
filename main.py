@@ -12,7 +12,7 @@ def main():
     # but might in the future.
     # https://mastodonpy.readthedocs.io/en/stable/10_streaming.html
     # mastodon.stream_user(listener, run_async=True)
-    mastodon.status_post(status="Ready for posts")
+    mastodon.status_post(status="Ready for posts", visibility="unlisted")
     mastodon.stream_user(listener)
 
 
