@@ -66,6 +66,7 @@ def build_reply(status):
     # replace with nitter url
     # post reply
     # TODO: Allow for sepcifying a nitter instance
+    print(status)
 
     parsed = HTMLFilter.convert_html_to_text(status.content)
     print("filtered status {}".format(parsed))
