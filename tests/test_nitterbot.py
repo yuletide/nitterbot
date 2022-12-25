@@ -438,6 +438,10 @@ def test_link_detection_with_non_twitter_link(non_twitter_link):
     assert bot.contains_twitter_link(non_twitter_link) is False
 
 
+def test_do_nothing_with_non_linky_status(status):
+    assert bot.build_reply(status) is None
+
+
 # circular logic?
 def test_replace_links_in_linky_status(status_linky):
     reply = bot.build_reply(status_linky)
