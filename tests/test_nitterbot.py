@@ -1,5 +1,3 @@
-import pytest
-
 # test_how_long.py
 from nitterbot import bot
 from nitterbot import __version__

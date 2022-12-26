@@ -81,7 +81,7 @@ def build_reply(status):
         # mastodon.status_post(in_reply_to_id=status.id, status=reply_text)
     else:
         print("no birdsite found, checking parent")
-        pp.pprint(status)
+        # pp.pprint(status)
         return
 
 
@@ -96,8 +96,11 @@ def process_mention(mention, api):
     reply = build_reply(status)
 
     # api.status_post(in_reply_to_id=status.id, status=reply)
-    api.status_reply(to_status=status, status=reply, untag=True, visibility="public")
-    print("reply posted")
+    if reply:
+        api.status_reply(
+            to_status=status, status=reply, untag=True, visibility="public"
+        )
+        print("reply posted")
     # print("reply posted to post {id}" % user.id)
 
 
