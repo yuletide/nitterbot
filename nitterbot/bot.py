@@ -119,5 +119,12 @@ def get_notifications(api):
         process_mention(mention, api)
 
 
+def get_parent_status(_status, api):
+    print("Fetching parent")
+    parent = api.status(_status.in_reply_to_id)
+    print(parent)
+    return parent
+
+
 if __name__ == "__main__":
     print("To run bot use python -m nitterbot")
