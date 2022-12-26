@@ -120,7 +120,6 @@ def process_mention(mention, api):
                     to_status=status,
                     status=parent_reply,
                     untag=True,
-                    visibility="unlisted",
                 )
             else:
                 print("no link found in parent, end of line")

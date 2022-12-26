@@ -2,8 +2,6 @@
 from nitterbot import bot
 from nitterbot import __version__
 import pytest
-import vcr
-
 
 # # https://github.com/halcy/Mastodon.py/blob/master/tests/conftest.py
 # def _api(
