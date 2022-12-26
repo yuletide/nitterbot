@@ -9,7 +9,10 @@ def main():
     # but might in the future.
     # https://mastodonpy.readthedocs.io/en/stable/10_streaming.html
     # mastodon.stream_user(listener, run_async=True)
-    mastodon.status_post(status="Ready for posts", visibility="private")
+    mastodon.status_post(
+        status="New deploy or recovering from crash. Ready for posts!",
+        visibility="private",
+    )
     mastodon.stream_user(listener)
 
 
