@@ -110,16 +110,20 @@ def process_mention(mention, api):
         print("checking parent")
         # TODO move this into build_reply
         # TODO move api to class method
-        parent = get_parent_status(status, api)
-        parent_reply = build_reply(parent)
-        if parent_reply:
-            print("parent had twitter link!")
-            print(parent_reply)
-            api.status_reply(
-                to_status=status, status=parent_reply, untag=True, visibility="unlisted"
-            )
-        else:
-            print("no link found in parent, end of line")
+        if status.in_reply_to_id:
+            parent = get_parent_status(status, api)
+            parent_reply = build_reply(parent)
+            if parent_reply:
+                print("parent had twitter link!")
+                print(parent_reply)
+                api.status_reply(
+                    to_status=status,
+                    status=parent_reply,
+                    untag=True,
+                    visibility="unlisted",
+                )
+            else:
+                print("no link found in parent, end of line")
 
     # print("reply posted to post {id}" % user.id)
 
