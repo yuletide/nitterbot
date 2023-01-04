@@ -23,9 +23,12 @@ else:
 USER_CREDS = "usercred.secret"
 CLIENT_CREDS = "clientcred.secret"
 
+# TODO: Convert this to a class and make these all instance methods
+
 
 def register():
-    # This only needs to be done once per server
+    """Register the app with the server, only needs to be run once per instance
+    to generate client secret"""
     print("creating app")
     Mastodon.create_app(
         "nitterbot",
@@ -35,6 +38,7 @@ def register():
 
 
 def init():
+    """Initialize API by logging in and saving user token to file"""
     if exists(CLIENT_CREDS):
         print("client secret found")
     else:
@@ -60,16 +64,17 @@ def init():
 
 
 def build_reply(status):
+    """
     # fetch reply
     # fetch status that reply was posted beneath
     # check status for twitter url
     # replace with nitter url
     # post reply
-    # TODO: Allow for sepcifying a nitter instance
+    # TODO: Allow for specifying a nitter instance
+    """
     print(status)
 
-    parsed = HTMLFilter.convert_html_to_text(status.content)
-    print("filtered status {}".format(parsed))
+    parsed = parse_status(status)
 
     reply_text = ""
     if contains_twitter_link(parsed):
@@ -77,7 +82,7 @@ def build_reply(status):
         reply_text = parsed.replace("twitter", "unofficialbird")
         print(reply_text)
         print("new status: {}".format(reply_text))
-        return reply_text
+        return "Your nitterified status is ready: " + reply_text
         # mastodon.status_post(in_reply_to_id=status.id, status=reply_text)
     else:
         print("no birdsite found, checking parent")
@@ -101,12 +106,40 @@ def process_mention(mention, api):
             to_status=status, status=reply, untag=True, visibility="public"
         )
         print("reply posted")
+    else:
+        print("checking parent")
+        # TODO move this into build_reply
+        # TODO move api to class method
+        if status.in_reply_to_id:
+            parent = get_parent_status(status, api)
+            parent_reply = build_reply(parent)
+            if parent_reply:
+                print("parent had twitter link!")
+                print(parent_reply)
+                api.status_reply(
+                    to_status=status,
+                    status=parent_reply,
+                    untag=True,
+                )
+            else:
+                print("no link found in parent, end of line")
+
     # print("reply posted to post {id}" % user.id)
 
 
 # TODO make this regex, but it works...
 def contains_twitter_link(text):
     return text.find("//twitter.com/") > 0
+
+
+# def status_contains_twitter_link(status):
+#     return contains_twitter_link(parse_status(status))
+
+
+def parse_status(status):
+    parsed = HTMLFilter.convert_html_to_text(status.content)
+    print("filtered status {}".format(parsed))
+    return parsed
 
 
 def get_notifications(api):
@@ -117,6 +150,22 @@ def get_notifications(api):
         # if notifications maintain read state we dont have to track previous replies
         # pp.pprint(mention)
         process_mention(mention, api)
+
+
+def get_parent_status(_status, api):
+    print("Fetching parent")
+    parent = api.status(_status.in_reply_to_id)
+    print(parent)
+    return parent
+
+
+def foo(x):
+    """
+    >>> x = 1
+    >>> foo(x) == 1
+    True
+    """
+    return x + 1
 
 
 if __name__ == "__main__":
