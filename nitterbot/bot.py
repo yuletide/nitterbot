@@ -159,5 +159,14 @@ def get_parent_status(_status, api):
     return parent
 
 
+def foo(x):
+    """
+    >>> x = 1
+    >>> foo(x) == 1
+    True
+    """
+    return x + 1
+
+
 if __name__ == "__main__":
     print("To run bot use python -m nitterbot")

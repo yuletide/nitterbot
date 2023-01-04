@@ -1,3 +1,4 @@
+# flake8: noqa
 import pytest
 import datetime
 from dateutil.tz import tzutc
@@ -446,7 +447,11 @@ def linky_parent():
 
 
 @pytest.fixture
-def notification():
+def notification_linky_parent(linky_parent):
+    return SimpleNamespace(**notification(linky_parent))
+
+
+def notification(status):
     _dict = {
         "id": 6684837,
         "type": "mention",
@@ -487,75 +492,6 @@ def notification():
                 },
             ],
         },
-        "status": {
-            "id": 109572761827885010,
-            "created_at": datetime.datetime(2022, 12, 25, 5, 54, 18, tzinfo=tzutc()),
-            "in_reply_to_id": None,
-            "in_reply_to_account_id": None,
-            "sensitive": False,
-            "spoiler_text": "",
-            "visibility": "public",
-            "language": "en",
-            "uri": "https://mastodon.social/users/yuletide/statuses/109572761775795910",
-            "url": "https://mastodon.social/@yuletide/109572761775795910",
-            "replies_count": 0,
-            "reblogs_count": 0,
-            "favourites_count": 0,
-            "edited_at": None,
-            "favourited": False,
-            "reblogged": False,
-            "muted": False,
-            "bookmarked": False,
-            "content": '<p><span class="h-card"><a href="https://botsin.space/@nitterbot" class="u-url mention" rel="nofollow noopener noreferrer" target="_blank">@<span>nitterbot</span></a></span> you ready for some twitter?</p>',
-            "filtered": [],
-            "reblog": None,
-            "account": {
-                "id": 109391862882784405,
-                "username": "yuletide",
-                "acct": "yuletide@mastodon.social",
-                "display_name": "alex yuletide",
-                "locked": False,
-                "bot": False,
-                "discoverable": True,
-                "group": False,
-                "created_at": datetime.datetime(2022, 6, 21, 0, 0, tzinfo=tzutc()),
-                "note": '<p>Spatial solutions arch &amp; web dev, social justice, civic tech, heavy metal.  Available for work! \u2028\u2029</p><p>Past: Mapbox Solutions Architect &amp; Tech Lead @ Community Team, <span class="h-card"><a href="https://mastodon.social/@recursecenter" class="u-url mention" rel="nofollow noopener noreferrer" target="_blank">@<span>recursecenter</span></a></span> fellow, founder of civic tech startup now part of @granicus, @codeforamerica fellow, @esri\u2029\u2028</p><p><a href="https://mastodon.social/tags/vegetarian" class="mention hashtag" rel="nofollow noopener noreferrer" target="_blank">#<span>vegetarian</span></a> <a href="https://mastodon.social/tags/zen" class="mention hashtag" rel="nofollow noopener noreferrer" target="_blank">#<span>zen</span></a> <a href="https://mastodon.social/tags/metal" class="mention hashtag" rel="nofollow noopener noreferrer" target="_blank">#<span>metal</span></a> <a href="https://mastodon.social/tags/bassmusic" class="mention hashtag" rel="nofollow noopener noreferrer" target="_blank">#<span>bassmusic</span></a> <a href="https://mastodon.social/tags/dj" class="mention hashtag" rel="nofollow noopener noreferrer" target="_blank">#<span>dj</span></a> <a href="https://mastodon.social/tags/maps" class="mention hashtag" rel="nofollow noopener noreferrer" target="_blank">#<span>maps</span></a> <a href="https://mastodon.social/tags/photography" class="mention hashtag" rel="nofollow noopener noreferrer" target="_blank">#<span>photography</span></a> <a href="https://mastodon.social/tags/webdev" class="mention hashtag" rel="nofollow noopener noreferrer" target="_blank">#<span>webdev</span></a> <a href="https://mastodon.social/tags/politics" class="mention hashtag" rel="nofollow noopener noreferrer" target="_blank">#<span>politics</span></a></p>',
-                "url": "https://mastodon.social/@yuletide",
-                "avatar": "https://files.botsin.space/cache/accounts/avatars/109/391/862/882/784/405/original/0efc492b3538e902.png",
-                "avatar_static": "https://files.botsin.space/cache/accounts/avatars/109/391/862/882/784/405/original/0efc492b3538e902.png",
-                "header": "https://files.botsin.space/cache/accounts/headers/109/391/862/882/784/405/original/1f2a8c1cc92143b4.png",
-                "header_static": "https://files.botsin.space/cache/accounts/headers/109/391/862/882/784/405/original/1f2a8c1cc92143b4.png",
-                "followers_count": 148,
-                "following_count": 78,
-                "statuses_count": 152,
-                "last_status_at": datetime.datetime(2022, 12, 25, 0, 0),
-                "emojis": [],
-                "fields": [
-                    {
-                        "name": "Birdsite",
-                        "value": '<a href="HTTPS://twitter.com/yuletide" rel="nofollow noopener noreferrer" target="_blank"><span class="invisible"></span><span class="">HTTPS://twitter.com/yuletide</span><span class="invisible"></span></a>',
-                        "verified_at": None,
-                    },
-                    {
-                        "name": "LinkedSite",
-                        "value": '<a href="https://linkedin.com/in/alexyule" rel="nofollow noopener noreferrer" target="_blank"><span class="invisible">https://</span><span class="">linkedin.com/in/alexyule</span><span class="invisible"></span></a>',
-                        "verified_at": None,
-                    },
-                ],
-            },
-            "media_attachments": [],
-            "mentions": [
-                {
-                    "id": 109543657746642932,
-                    "username": "nitterbot",
-                    "url": "https://botsin.space/@nitterbot",
-                    "acct": "nitterbot",
-                }
-            ],
-            "tags": [],
-            "emojis": [],
-            "card": None,
-            "poll": None,
-        },
+        "status": status,
     }
-    return SimpleNamespace(**_dict)
+    return _dict
