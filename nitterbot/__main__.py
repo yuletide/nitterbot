@@ -1,5 +1,6 @@
 from nitterbot.bot import init
 from nitterbot.notifylistener import NotifyListener
+from mastodon.errors import MastodonNetworkError
 
 
 def main():
@@ -13,7 +14,11 @@ def main():
         status="New deploy or recovering from crash. Ready for posts!",
         visibility="private",
     )
-    mastodon.stream_user(listener)
+    try:
+        mastodon.stream_user(listener)
+    except MastodonNetworkError as err:
+        print("Network error, reinitializing", err)
+        main()  # this needs real refactoring to have proper retries forever, should we re-use the client or listener?
 
 
 main()
