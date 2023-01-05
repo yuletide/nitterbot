@@ -1,6 +1,8 @@
 from nitterbot.bot import init
 from nitterbot.notifylistener import NotifyListener
 from mastodon.errors import MastodonNetworkError
+from mastodon.errors import MastodonInternalServerError
+from time import sleep
 
 
 def main():
@@ -18,7 +20,13 @@ def main():
         mastodon.stream_user(listener)
     except MastodonNetworkError as err:
         print("Network error, reinitializing", err)
-        main()  # this needs real refactoring to have proper retries forever, should we re-use the client or listener?
+        main()  # this needs real refactoring to have proper retries forever,
+        # should we re-use the client or listener?
+    except MastodonInternalServerError as err:
+        print("Internal server error, what is going on?", err)
+        # Try giving it a breather
+        sleep(10)
+        main()
 
 
 main()
