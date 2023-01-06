@@ -20,6 +20,7 @@ else:
     config["USER"] = getenv("USER")
     print(config["USER"])
     config["PASSWORD"] = getenv("PASSWORD")
+    config["ENV"] = getenv("ENV")
 USER_CREDS = "usercred.secret"
 CLIENT_CREDS = "clientcred.secret"
 
@@ -102,6 +103,7 @@ def process_mention(mention, api):
 
     # api.status_post(in_reply_to_id=status.id, status=reply)
     if reply:
+        print("Posting reply")
         api.status_reply(
             to_status=status, status=reply, untag=True, visibility="public"
         )
@@ -116,6 +118,7 @@ def process_mention(mention, api):
             if parent_reply:
                 print("parent had twitter link!")
                 print(parent_reply)
+                print("Posting reply")
                 api.status_reply(
                     to_status=status,
                     status=parent_reply,
@@ -157,15 +160,6 @@ def get_parent_status(_status, api):
     parent = api.status(_status.in_reply_to_id)
     print(parent)
     return parent
-
-
-def foo(x):
-    """
-    >>> x = 1
-    >>> foo(x) == 1
-    True
-    """
-    return x + 1
 
 
 if __name__ == "__main__":
