@@ -126,6 +126,8 @@ def process_mention(mention, api):
                 )
             else:
                 print("no link found in parent, end of line")
+        else:
+            print("no parent found")
 
     # print("reply posted to post {id}" % user.id)
 
