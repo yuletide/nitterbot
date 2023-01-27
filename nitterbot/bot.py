@@ -3,6 +3,7 @@ from os.path import exists
 from os import getenv
 
 from mastodon import Mastodon
+from mastodon.errors import MastodonInternalServerError
 
 # from nitterbot.notifylistener import NotifyListener
 from nitterbot.parser import HTMLFilter
@@ -104,10 +105,14 @@ def process_mention(mention, api):
     # api.status_post(in_reply_to_id=status.id, status=reply)
     if reply:
         print("Posting reply")
-        api.status_reply(
-            to_status=status, status=reply, untag=True, visibility="public"
-        )
-        print("reply posted")
+        try:
+            api.status_reply(
+                to_status=status, status=reply, untag=True, visibility="public"
+            )
+            print("reply posted")
+        except MastodonInternalServerError as err:
+            print("Error posting reply  -- trying again", err)
+            process_mention(mention, api)
     else:
         print("checking parent")
         # TODO move this into build_reply
