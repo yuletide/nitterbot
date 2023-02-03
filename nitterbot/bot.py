@@ -1,68 +1,7 @@
-from dotenv import dotenv_values
-from os.path import exists
-from os import getenv
-
-from mastodon import Mastodon
 from mastodon.errors import MastodonInternalServerError
 
 # from nitterbot.notifylistener import NotifyListener
 from nitterbot.parser import HTMLFilter
-
-# For debugging api responses
-import pprint
-
-
-pp = pprint.PrettyPrinter(indent=4)
-config = dotenv_values(".env")
-if "USER" in config:
-    print("config loaded yay")
-else:
-    print("loading config from environment")
-    config["USER"] = getenv("USER")
-    print(config["USER"])
-    config["PASSWORD"] = getenv("PASSWORD")
-    config["ENV"] = getenv("ENV")
-USER_CREDS = "usercred.secret"
-CLIENT_CREDS = "clientcred.secret"
-
-# TODO: Convert this to a class and make these all instance methods
-
-
-def register():
-    """Register the app with the server, only needs to be run once per instance
-    to generate client secret"""
-    print("creating app")
-    Mastodon.create_app(
-        "nitterbot",
-        api_base_url="https://botsin.space/",
-        to_file=CLIENT_CREDS,
-    )
-
-
-def init():
-    """Initialize API by logging in and saving user token to file"""
-    if exists(CLIENT_CREDS):
-        print("client secret found")
-    else:
-        register()
-
-    if exists(USER_CREDS):
-        print("user token already found")
-    else:
-        # Then, log in. This can be done every time your application starts (e.g. when
-        # writing a simple bot), or you can use the persisted information:
-        mastodon = Mastodon(
-            client_id="clientcred.secret",
-        )
-        print("logging in")
-        mastodon.log_in(
-            username=config["USER"],
-            password=config["PASSWORD"],
-            to_file=USER_CREDS,
-        )
-
-    api = Mastodon(access_token=USER_CREDS)
-    return api
 
 
 def build_reply(status):
@@ -152,14 +91,14 @@ def parse_status(status):
     return parsed
 
 
-def get_notifications(api):
-    print("fetching mentions")
-    notifications = api.notifications(types=["mention"])
-    # Returns a list of notification dicts.
-    for mention in notifications:
-        # if notifications maintain read state we dont have to track previous replies
-        # pp.pprint(mention)
-        process_mention(mention, api)
+# def get_notifications(api):
+#     print("fetching mentions")
+#     notifications = api.notifications(types=["mention"])
+#     # Returns a list of notification dicts.
+#     for mention in notifications:
+#         # if notifications maintain read state we dont have to track previous replies
+#         # pp.pprint(mention)
+#         process_mention(mention, api)
 
 
 def get_parent_status(_status, api):
