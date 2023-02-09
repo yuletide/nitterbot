@@ -1,4 +1,6 @@
 # test_how_long.py
+from unittest.mock import Mock
+
 from nitterbot import bot
 from nitterbot import __version__
 
@@ -37,7 +39,7 @@ def test_do_nothing_with_non_linky_status(status):
 
 
 # def test_respond_to_linky_parent(linky_parent):
-#     assert bot.
+#
 
 # circular logic?
 def test_replace_links_in_linky_status(status_linky):
@@ -45,9 +47,30 @@ def test_replace_links_in_linky_status(status_linky):
     assert bot.contains_twitter_link(reply) is False
 
 
-def test_respond_to_notification_with_linky_status(notification_linky_parent):
-    print(notification_linky_parent)
-    assert notification_linky_parent is not None
+def test_linky_status_too_long():
+    # placeholder
+    pass
+
+
+def test_respond_to_notification_with_linky_parent_status(
+    notification_with_linky_parent, linky_parent
+):
+    api = Mock()
+    api.status.return_value = linky_parent
+    print(notification_with_linky_parent)
+    assert notification_with_linky_parent is not None
+
+    bot.process_mention(notification_with_linky_parent, api)
+
+    api.status.assert_called_once_with(
+        notification_with_linky_parent.status.in_reply_to_id
+    )
+    api.status_reply.assert_called_once_with(
+        to_status=notification_with_linky_parent.status,
+        status=bot.build_reply(linky_parent),
+        untag=True,
+        visibility="public",
+    )
 
 
 # @pytest.mark.vcr()
