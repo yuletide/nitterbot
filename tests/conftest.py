@@ -2,7 +2,23 @@
 import pytest
 import datetime
 from dateutil.tz import tzutc
-from types import SimpleNamespace
+
+
+class Objectify:
+    def __init__(self, d):
+        self.d = d
+
+    def __repr__(self):
+        return repr(self.d)
+
+    def __get__(self, key):
+        return self.d[key]
+
+    def __getattr__(self, attr):
+        result = self.d[attr]
+        if isinstance(result, dict):
+            return Objectify(result)
+        return result
 
 
 @pytest.fixture
@@ -94,7 +110,7 @@ def status_linky():
     }
     # https://stackoverflow.com/questions/16279212/how-to-use-dot-notation-for-dict-in-python
     # Library functions are expecting parsed objects not dicts so convert it
-    return SimpleNamespace(**_dict)
+    return Objectify(_dict)
 
 
 @pytest.fixture
@@ -171,7 +187,7 @@ def status():
     }
     # https://stackoverflow.com/questions/16279212/how-to-use-dot-notation-for-dict-in-python
     # Library functions are expecting parsed objects not dicts so convert it over
-    return SimpleNamespace(**_dict)
+    return Objectify(_dict)
 
 
 @pytest.fixture
@@ -285,7 +301,7 @@ def notification_linky_direct():
             "poll": None,
         },
     }
-    return SimpleNamespace(**_dict)
+    return Objectify(_dict)
 
 
 @pytest.fixture
@@ -360,7 +376,7 @@ def status_with_linky_parent():
         "card": None,
         "poll": None,
     }
-    return SimpleNamespace(**_dict)
+    return Objectify(_dict)
 
 
 @pytest.fixture
@@ -443,12 +459,12 @@ def linky_parent():
         },
         "poll": None,
     }
-    return SimpleNamespace(**_dict)
+    return Objectify(_dict)
 
 
 @pytest.fixture
-def notification_linky_parent(linky_parent):
-    return SimpleNamespace(**notification(linky_parent))
+def notification_with_linky_parent(status_with_linky_parent):
+    return Objectify(notification(status_with_linky_parent))
 
 
 def notification(status):

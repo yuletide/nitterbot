@@ -1,13 +1,18 @@
-from nitterbot.bot import init, config
-from nitterbot.notifylistener import NotifyListener
 from mastodon.errors import MastodonNetworkError
 from mastodon.errors import MastodonInternalServerError
+from dotenv import dotenv_values
 from time import sleep
+
+# For debugging api responses
+
+from nitterbot.notifylistener import NotifyListener
+from nitterbot.mastodon import get_api
 
 
 def main():
-    listener = NotifyListener()
-    mastodon = init()
+    config = dotenv_values(".env")
+    mastodon = get_api(config)
+    listener = NotifyListener(mastodon)
 
     # Don't post a status if we are testing locally
     if not config["ENV"] == "DEV":

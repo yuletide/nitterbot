@@ -1,12 +1,13 @@
 from mastodon.streaming import StreamListener
-from nitterbot.bot import process_mention, init
+from nitterbot.bot import process_mention
 
 
 # This is a mess, and leads to circular dependencies
 class NotifyListener(StreamListener):
-    def __init__(self) -> None:
+    def __init__(self, api) -> None:
         print("**listening**")
-        self.api = init()
+        # self.api = init()
+        self.api = api
         super().__init__()
 
     def on_notification(self, notification):
