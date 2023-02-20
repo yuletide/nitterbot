@@ -20,3 +20,6 @@ https://www.pythoncheatsheet.org/blog/python-projects-with-poetry-and-vscode-par
 https://gist.github.com/aparrish/661fca5ce7b4882a8c6823db12d42d26
 
 https://www.programcreek.com/python/?project_name=zigg%2Ffediplay# 
+
+Thanks to help from:
+Sam Eisenhandler, Max Shron, the Recurse Center
