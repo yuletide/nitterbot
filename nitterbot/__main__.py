@@ -28,11 +28,12 @@ def main():
         mastodon.stream_user(listener)
     except MastodonNetworkError as err:
         print("Network error, reinitializing ", err)
+        sleep(120)
         main()  # TODO: refactor here
     except MastodonInternalServerError as err:
         print("Internal server error, what is going on?", err)
         # Pause to avoid some strange errors
-        sleep(60)
+        sleep(360)
         main()
 
 
