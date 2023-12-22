@@ -24,7 +24,7 @@ def build_reply(status):
         # TODO replace with regex
         # reply_text = parsed.replace("twitter.com", "unofficialbird.com")
         # reply_text = parsed.replace("x.com", "unofficialbird.com")
-        reply_text = re.sub(r'twitter.com|x.com', 'unofficialbird.com', parsed)
+        reply_text = re.sub(r'twitter.com|x.com', 'nitter.net', parsed)
         print(reply_text)
         print("new status: {}".format(reply_text))
         return "Your nitterified status is ready: " + reply_text
