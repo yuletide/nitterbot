@@ -2,6 +2,7 @@ from mastodon.errors import MastodonInternalServerError
 
 # from nitterbot.notifylistener import NotifyListener
 from nitterbot.parser import HTMLFilter
+import re
 
 
 def build_reply(status):
@@ -20,7 +21,10 @@ def build_reply(status):
     reply_text = ""
     if contains_twitter_link(parsed):
         print("*birdsite detected, replacing*")
-        reply_text = parsed.replace("twitter", "unofficialbird")
+        # TODO replace with regex
+        # reply_text = parsed.replace("twitter.com", "unofficialbird.com")
+        # reply_text = parsed.replace("x.com", "unofficialbird.com")
+        reply_text = re.sub(r'/twitter.com|x.com/', 'unofficialbird.com', parsed)
         print(reply_text)
         print("new status: {}".format(reply_text))
         return "Your nitterified status is ready: " + reply_text
