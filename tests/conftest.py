@@ -25,6 +25,9 @@ class Objectify:
 def twitter_link():
     return "https://twitter.com/yuletide/status/1603949101154201603"
 
+@pytest.fixture
+def x_link():
+   return "https://x.com/yuletide/status/1603949101154201603" 
 
 @pytest.fixture
 def non_twitter_link():

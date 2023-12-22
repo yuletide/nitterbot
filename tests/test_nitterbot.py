@@ -29,6 +29,8 @@ from nitterbot import __version__
 def test_link_detection_with_twitter_link(twitter_link):
     assert bot.contains_twitter_link(twitter_link) is True
 
+def test_link_detection_with_x_link(x_link):
+    assert bot.contains_twitter_link(x_link) is True
 
 def test_link_detection_with_non_twitter_link(non_twitter_link):
     assert bot.contains_twitter_link(non_twitter_link) is False
