@@ -83,7 +83,7 @@ def process_mention(mention, api):
 
 # TODO make this regex, but it works...
 def contains_twitter_link(text):
-    return text.find("//twitter.com/") > 0
+    return text.find("//twitter.com/") > 0 or text.find("//x.com") > 0
 
 
 # def status_contains_twitter_link(status):

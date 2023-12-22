@@ -17,8 +17,8 @@ def main():
     # Don't post a status if we are testing locally
     if not config["ENV"] == "DEV":
         mastodon.status_post(
+            visibility="direct",
             status="New deploy or recovering from crash. Ready for posts!",
-            visibility="private",
         )
     try:
         # Mastodon.py currently does not support websocket based, multiplexed streams,
